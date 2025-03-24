@@ -23,7 +23,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         config_entry.data[CONF_NAME],
         config_entry.data[CONF_REGION],
         async_get_clientsession(hass)
-    ], True)
+    )], True)
 
 class OilPriceSensor(Entity):
     """Representation of an Oil Price Sensor."""
