@@ -35,7 +35,7 @@ class OilPriceSensor(Entity):
         self._session = session
         self._state = None
         self._entries = {}
-        self._attr_unique_id = f"oilprice_{region}"
+        self._attr_unique_id = f"oilprice_{region.replace("-","_")}"
 
     async def async_update(self):
         """Fetch the latest oil price data."""
