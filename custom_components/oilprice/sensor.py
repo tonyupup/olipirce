@@ -1,6 +1,7 @@
 import re
 import logging
 import datetime
+from datetime import datetime as dt
 import aiohttp
 import async_timeout
 from bs4 import BeautifulSoup
@@ -53,8 +54,11 @@ class OilPriceSensor(Entity):
 
                     soup = BeautifulSoup(text, "lxml")
                     dls = soup.select("#youjia > dl")
-                    self._state = soup.select("#youjiaCont > div")[1].contents[0].strip()
+                    next_update = dt.strptime(soup.select("#youjiaCont > div")[1].contents[0].strip(),"下次油价%m月%d日24时调整")
+                    next_update = next_update.replace(year=dt.now().year)
+                    next_update +=datetime.timedelta(days=1) 
 
+                    self._state = next_update
                     for dl in dls:
                         k = re.search(r"\d+", dl.select('dt')[0].text).group()
                         self._entries[k] = dl.select('dd')[0].text
