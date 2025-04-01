@@ -1,7 +1,48 @@
 import voluptuous as vol
 from homeassistant import config_entries
+from homeassistant.helpers import config_validation as cv
 from homeassistant.core import callback
 from .const import DOMAIN, CONF_NAME, CONF_REGION
+from enum import Enum
+
+
+class RegionEnum(Enum):
+    BEIJING= "beijing"
+    SHANGHAI= "shanghai"
+    TIANJIN= "tianjin"
+    CHONGQING= "chongqing"
+    FUJIAN= "fujian"
+    SHENZHEN= "shenzhen"
+    GANSU= "gansu"
+    GUANGDONG= "guangdong"
+    GUANGXI= "guangxi"
+    GUIZHOU= "guizhou"
+    HAINAN= "hainan"
+    HEBEI= "hebei"
+    HENAN= "henan"
+    HUBEI= "hubei"
+    HUNAN= "hunan"
+    JILIN= "jilin"
+    JIANGSU= "jiangsu"
+    JIANGXI= "jiangxi"
+    LIAONING= "liaoning"
+    ZHEJIANG= "zhejiang"
+    NEIMENGGU= "neimenggu"
+    ANHUI= "anhui"
+    NINGXIA= "ningxia"
+    QINGHAI= "qinghai"
+    SHANDONG= "shandong"
+    SHANXI3= "shanxi-3"
+    SHANXI= "shanxi"
+    SICHUAN= "sichuan"
+    XIZANG= "xizang"
+    HEILONGJIANG= "heilongjiang"
+    XINJIANG= "xinjiang"
+    YUNNAN= "yunnan"
+    GUONEIYOUJIA= "guoneiyoujia"
+    JIAYOUZHAN= "jiayouzhan"
+
+
 
 class OilPriceConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Oil Price."""
@@ -23,8 +64,8 @@ class OilPriceConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
 
         data_schema = vol.Schema({
-            vol.Required(CONF_NAME): str,
-            vol.Required(CONF_REGION): str,
+            vol.Required(CONF_NAME): cv.string,
+            vol.Required(CONF_REGION): cv.enum(RegionEnum),
         })
 
         return self.async_show_form(
