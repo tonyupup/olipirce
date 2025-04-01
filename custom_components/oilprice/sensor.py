@@ -54,7 +54,7 @@ class OilPriceSensor(Entity):
 
                     soup = BeautifulSoup(text, "lxml")
                     dls = soup.select("#youjia > dl")
-                    next_update = dt.strptime(soup.select("#youjiaCont > div")[1].contents[0].strip(),"下次油价%m月%d日24时调整")
+                    next_update = dt.strptime(soup.select("#youjiaCont > div")[1].contents[0].strip().replace("下次",""),"油价%m月%d日24时调整")
                     next_update = next_update.replace(year=dt.now().year,tzinfo=dt.now().tzinfo)
                     next_update +=datetime.timedelta(days=1) 
 
@@ -65,7 +65,7 @@ class OilPriceSensor(Entity):
                     self._entries["update_time"] = datetime.datetime.now().strftime('%Y-%m-%d')
                     self._entries["tips"] = soup.select("#youjiaCont > div:nth-of-type(2) > span")[0].text.strip()
 
-        except (aiohttp.ClientError, asyncio.TimeoutError) as err:
+        except (aiohttp.ClientError, aiohttp.ServerTimeoutError) as err:
             _LOGGER.error("Error fetching oil price data: %s", err)
             self._state = "unavailable"
 
