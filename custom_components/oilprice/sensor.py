@@ -55,7 +55,7 @@ class OilPriceSensor(Entity):
                     soup = BeautifulSoup(text, "lxml")
                     dls = soup.select("#youjia > dl")
                     next_update = dt.strptime(soup.select("#youjiaCont > div")[1].contents[0].strip().replace("下次",""),"油价%m月%d日24时调整")
-                    next_update = next_update.replace(year=dt.now().year,tzinfo=dt.now().tzinfo, hour=24)
+                    next_update = next_update.replace(year=dt.now().year,tzinfo=dt.now().tzinfo)
                     next_update +=datetime.timedelta(days=1) 
 
                     self._state = next_update.strftime('%d/%m/%Y')
